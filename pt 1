@@ -1,0 +1,52 @@
+const fetch = require('node-fetch');
+
+const getFavoriteNumberFact = async (favoriteNumber) => {
+    try {
+        const response = await fetch(`http://numbersapi.com/${favoriteNumber}?json`);
+        const data = await response.json();
+        return data.text;
+    } catch (error) {
+        console.log('Error fetching data:', error);
+    }
+};
+
+const favoriteNumber = 7; // Change this to your favorite number
+getFavoriteNumberFact(favoriteNumber)
+    .then((fact) => console.log(fact))
+    .catch((error) => console.log(error));
+
+const fetchNumberFacts = async (numbers) => {
+  const requests = numbers.map(number => fetch(`http://numbersapi.com/${number}`));
+  const responses = await Promise.all(requests);
+  const data = await Promise.all(responses.map(response => response.text()));
+  data.forEach((fact, index) => {
+    const factElement = document.createElement('p');
+    factElement.textContent = `Number ${numbers[index]}: ${fact}`;
+    document.body.appendChild(factElement);
+  });
+};
+
+const numbers = [1, 5, 10, 20];
+fetchNumberFacts(numbers);
+
+const getFavoriteNumberFacts = async () => {
+    const response1 = await fetch('https://api.example.com/facts/1');
+    const fact1 = await response1.json();
+
+    const response2 = await fetch('https://api.example.com/facts/2');
+    const fact2 = await response2.json();
+
+    const response3 = await fetch('https://api.example.com/facts/3');
+    const fact3 = await response3.json();
+
+    const response4 = await fetch('https://api.example.com/facts/4');
+    const fact4 = await response4.json();
+
+    document.getElementById('fact1').innerText = fact1.text;
+    document.getElementById('fact2').innerText = fact2.text;
+    document.getElementById('fact3').innerText = fact3.text;
+    document.getElementById('fact4').innerText = fact4.text;
+};
+
+getFavoriteNumberFacts();
+
